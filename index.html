@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мое приложение</title>
+    <!-- Подключаем CSS файл -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Подключаем Telegram Web App SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js?56"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Привет, <span id="username">друг</span>!</h1>
+        <p class="description">Это пример Mini App для Telegram.</p>
+        <button id="actionButton" class="tg-button">Отправить данные</button>
+        <div id="statusMessage"></div>
+    </div>
+
+    <!-- Основная логика -->
+    <script>
+        // Получаем объект Telegram WebApp
+        const tg = window.Telegram?.WebApp;
+
+        // Функция для отображения статуса
+        function setStatus(text, isError = false) {
+            const el = document.getElementById('statusMessage');
+            el.textContent = text;
+            el.style.color = isError ? 'red' : 'var(--tg-theme-text-color)';
+        }
+
+        if (tg) {
+            // Сообщаем Telegram, что приложение готово
+            tg.ready();
+
+            // Получаем данные пользователя
+            const user = tg.initDataUnsafe?.user;
+            if (user) {
+                document.getElementById('username').textContent = user.first_name || 'пользователь';
+            }
+
+            // Настраиваем кнопку
+            document.getElementById('actionButton').addEventListener('click', function() {
+                // Собираем данные для отправки
+                const dataToSend = JSON.stringify({
+                    action: 'button_click',
+                    timestamp: new Date().toISOString(),
+                    userId: user?.id || null
+                });
+
+                // Отправляем данные боту
+                tg.sendData(dataToSend);
+                setStatus('Данные отправлены!');
+
+                // Закрываем приложение
+                // tg.close();
+            });
+
+            // Можно сразу развернуть приложение на весь экран
+            tg.expand();
+
+        } else {
+            // Режим для тестирования вне Telegram
+            document.getElementById('username').textContent = 'тестер';
+            setStatus('⚠️ Приложение запущено вне Telegram', true);
+        }
+    </script>
+</body>
+</html>

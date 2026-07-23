@@ -1,0 +1,58 @@
+css
+/* Используем системные переменные Telegram для нативной интеграции */
+body {
+    font-family: var(--tg-theme-font-family, -apple-system, sans-serif);
+    background-color: var(--tg-theme-bg-color, #ffffff);
+    color: var(--tg-theme-text-color, #000000);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+.container {
+    max-width: 400px;
+    width: 100%;
+    background-color: var(--tg-theme-secondary-bg-color, #f0f0f0);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 8px;
+    color: var(--tg-theme-text-color, #000000);
+}
+
+.description {
+    color: var(--tg-theme-hint-color, #999999);
+    margin-bottom: 24px;
+}
+
+.tg-button {
+    background-color: var(--tg-theme-button-color, #0088cc);
+    color: var(--tg-theme-button-text-color, #ffffff);
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    width: 100%;
+}
+
+.tg-button:hover {
+    opacity: 0.8;
+}
+
+#statusMessage {
+    margin-top: 20px;
+    font-size: 14px;
+    min-height: 20px;
+    color: var(--tg-theme-text-color, #000000);
