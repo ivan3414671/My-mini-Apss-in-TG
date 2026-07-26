@@ -3,16 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мое Мини-приложение</title>
-    <!-- Подключаем Telegram WebApp SDK -->
+    <title>Мое приложение (Python + HTML)</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
     <div class="container">
-        <h1 id="greeting">Привет!</h1>
-        <button id="sendDataBtn">Отправить данные в бот</button>
+        <!-- Приветствие с данными от Python -->
+        <h1>Привет, {{ user_name }}!</h1>
+        <p>Ваш ID: {{ user_id }}</p>
+        <p>Первый визит: {{ first_visit }}</p>
+
+        <hr>
+
+        <!-- ОТОБРАЖЕНИЕ ДАННЫХ -->
+        <div class="counter-box">
+            <h2>Счетчик: <span class="counter-value">{{ count }}</span></h2>
+
+            <!-- ФОРМЫ ДЛЯ ДЕЙСТВИЙ (без JavaScript!) -->
+            <form action="/increment" method="POST">
+                <input type="hidden" name="user_id" value="{{ user_id }}">
+                <input type="hidden" name="user_name" value="{{ user_name }}">
+                <button type="submit" class="btn-primary">➕ Увеличить</button>
+            </form>
+
+            <form action="/reset" method="POST">
+                <input type="hidden" name="user_id" value="{{ user_id }}">
+                <input type="hidden" name="user_name" value="{{ user_name }}">
+                <button type="submit" class="btn-danger">🔄 Сбросить</button>
+            </form>
+        </div>
+
+        <hr>
+
+        <!-- ПОЛЬЗОВАТЕЛЬСКИЙ ВВОД -->
+        <div class="custom-action">
+            <h3>Добавить свое число</h3>
+            <form action="/custom_action" method="POST">
+                <input type="hidden" name="user_id" value="{{ user_id }}">
+                <input type="hidden" name="user_name" value="{{ user_name }}">
+                <input type="number" name="custom_value" placeholder="Введите число" required>
+                <button type="submit" class="btn-secondary">Добавить</button>
+            </form>
+        </div>
+
+        <hr>
+
+        <!-- ИСТОРИЯ -->
+        <div class="history">
+            <h3>История действий</h3>
+            {% if history %}
+                <ul>
+                {% for item in history %}
+                    <li>{{ item.time }} - {{ item.action }} (счетчик: {{ item.new_count }})</li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p>История пуста</p>
+            {% endif %}
+
+            <a href="/history?user_id={{ user_id }}&user_name={{ user_name }}" class="btn-link">
+                📜 Полная история
+            </a>
+        </div>
     </div>
-    <script src="app.js"></script>
 </body>
 </html>
